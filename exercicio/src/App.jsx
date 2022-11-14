@@ -23,34 +23,58 @@ function App() {
   const [inputValue, setInputValue] = useState("");
   const [filtro, setFiltro] = useState("")
 
-  // useEffect() => {
-  //   () => {
+  useEffect(()=>{
+    if(tarefas.length>0){
+      const tarefaString = JSON.stringify(tarefas)
+      localStorage.setItem("tarefa", tarefas)
+    }
+  },[tarefas])
 
-  //   },
-  //   []
-  // };
 
-  // useEffect() => {
-  //   () => {
+  useEffect(()=>{
+    const tarefaGet = localStorage.getItem("tarefa")
 
-  //   },
-  //   []
-  // };
+    if(tarefaGet !== null){
+      const tarefasArray = JSON.parse(tarefaGet)
+      setTarefa(tarefasArray)
+    }
+  },[])
 
   const onChangeInput = (event) => {
-    console.log("aaa");
+    setInputValue(event.target.value)
   }
-
+//============= 01 =================
   const criaTarefa = () => {
-    console.log("aaa");
-  }
+    const novaTarefa ={
+      id: Date.now(),
+      texto: inputValue,
+      completa: false
+    }
+    console.log(tarefas)
+    const copiaDoEstado = [...tarefas]
 
+    copiaDoEstado.push(novaTarefa)
+
+    setTarefa(copiaDoEstado)
+    setInputValue("")
+  }
+//================== 02 ===================
   const selectTarefa = (id) => {
-    console.log("aaa");
+    const copiaTarefa = [...tarefas]
+   
+    const tarefaEncontrada = copiaTarefa.find((tarefa) =>{
+      return tarefa.id === id
+    })
+    tarefaEncontrada.completa = !tarefaEncontrada.completa
+   
+    console.log(tarefaEncontrada)
+    
+    setTarefa(copiaTarefa)
+    setInputValue("")
   }
-
+//================ 03 ===============
   const onChangeFilter = (event) => {
-    console.log("aaa");
+    setFiltro(event.target.value)
   }
 
 
